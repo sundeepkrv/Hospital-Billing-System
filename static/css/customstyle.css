@@ -1,1 +1,30 @@
-
+.navbar { box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 15px; border-radius: 2rem 2rem 4px 4px; background: linear-gradient(to right, #aa4b6b, #6b6b83, #3b8d99); }
+.navbar-bg { background: linear-gradient(to right, #aa4b6b, #6b6b83, #3b8d99); }
+.navbar-brand { font-size: 2rem!important; color: white; }
+.nav-item { margin-left: 1rem; color: white; }
+.logout { color: white; }
+.logout:hover { color: #fd7e14; }
+.vertical-nav { font-size: 1.1rem; background: #e3f2fd; box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 15px; border-radius: 2rem 1px; }
+.form-select { border-top-right-radius: 0.375rem !important; border-bottom-right-radius: 0.375rem !important; }
+.progress { height: 5px; }
+.content { width: 80%; }
+.logoimg { max-width: 250px; }
+.headerimg { max-width: 50px; }
+.dt-search > label, .dt-length > label { padding: 5px; }
+.dash-icon, .header { color: #008080; }
+.datepicker { z-index: 99; }
+.disabled { background: #efefef; pointer-events: none; }
+.alert { width: 400px; z-index:9; margin: 20px 30px; }
+.bill-icon { color: #ff0080; }
+.doc-icon { color: #f2613f; }
+.pat-icon { color: #7928ca; }
+.submitbtn { background-image: linear-gradient(310deg, #7928ca, #ff0080); border: none; text-transform: uppercase; color: white; }
+.submitbtn:hover { font-weight: bold; color: white; }
+#billtable .thead th { background: #ff00802f!important; }
+#doctable .thead th { background: #f2613f2f!important; }
+#pattable .thead th { background: #7928ca2f!important; }
+.footbar { box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 15px; border-radius: 4px 4px 2rem 2rem; background: linear-gradient(to left, #aa4b6b, #6b6b83, #3b8d99); }
+@media print {
+	.non-printable { visibility: hidden;}
+	.printable { visibility: visible; width: 95%; position: absolute;}
+}
