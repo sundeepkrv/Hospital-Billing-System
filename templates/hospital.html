@@ -1,0 +1,107 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10 printable">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h4 class="my-2 py-2 text-center text-info">💐 Welcome to Doc Bill. Add / Edit following details to setup your Hospital 🩺</h4>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<form action="/hospital" method="POST" enctype="multipart/form-data">
+							<div class="row py-2 px-5 g-2">
+								<div class="col-12">
+									<div class="input-group">
+										<span class="input-group-text"><i class="text-primary fa-solid fa-hospital"></i></span>
+										<input type="text" class="form-control" id="name" name="name" placeholder="Enter Hospital Name" required>
+									</div>
+								</div>
+								<div class="col-10">
+									<label for="logo" class="form-label">Upload Hospital Logo (Atleast 300px x 400px. Maximum 2 MB Size. High Resolution PNG Format Only)</label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="text-primary fa-solid fa-font-awesome"></i></span>
+										<input type="file" class="form-control" id="logo" name="logo" accept="image/jpg, image/jpeg, image/png" onchange="readURL(this);" required>
+									</div>
+								</div>
+								<div class="col-2 position-relative border border-2 border-info text-center"><img id="imageResult" src="#" alt="" class="img-fluid"></div>
+								<div class="col-12">
+									<div class="input-group">
+										<span class="input-group-text"><i class="text-primary fa-solid fa-map-location"></i></span>
+										<input type="text" class="form-control" id="address" name="address" placeholder="Enter Hospital Address" required>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-group">
+										<span class="input-group-text"><i class="text-primary fa-solid fa-phone-volume"></i></span>
+										<input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Hospital Contact Number" required>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-group">
+										<span class="input-group-text"><i class="text-primary fa-solid fa-envelope"></i></span>
+										<input type="email" class="form-control" id="email" name="email" placeholder="Enter Hospital Email ID" required>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-group">
+										<label class="form-label">Click on below specializations to add to your Hospital:</label>
+										<div class="btn-group row row-cols-md-6 g-2" role="group">
+											<input type="checkbox" class="btn-check" id="spec1" autocomplete="off" name="specs" value="Cardiology">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec1">Cardiology</label>
+											<input type="checkbox" class="btn-check" id="spec2" autocomplete="off" name="specs" value="Neurology">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec2">Neurology</label>
+											<input type="checkbox" class="btn-check" id="spec3" autocomplete="off" name="specs" value="Pulmonology">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec3">Pulmonology</label>
+											<input type="checkbox" class="btn-check" id="spec4" autocomplete="off" name="specs" value="Gynecology">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec4">Gynecology</label>
+											<input type="checkbox" class="btn-check" id="spec5" autocomplete="off" name="specs" value="Dermatology">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec5">Dermatology</label>
+											<input type="checkbox" class="btn-check" id="spec6" autocomplete="off" name="specs" value="Pediatrics">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec6">Pediatrics</label>
+											<input type="checkbox" class="btn-check" id="spec7" autocomplete="off" name="specs" value="General Medicine">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec7">General Medicine</label>
+											<input type="checkbox" class="btn-check" id="spec8" autocomplete="off" name="specs" value="Opthalmology">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec8">Opthalmology</label>
+											<input type="checkbox" class="btn-check" id="spec9" autocomplete="off" name="specs" value="Orthopedics">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec9">Orthopedics</label>
+											<input type="checkbox" class="btn-check" id="spec10" autocomplete="off" name="specs" value="Nephrology">
+											<label class="btn btn-outline-primary mx-1 rounded-pill col" for="spec10">Nephrology</label>
+										</div>
+									</div>
+								</div>
+								<p class="m-1 text-warning">All fields are mandatory</p>
+								<div class="col">
+									<div class="d-flex justify-content-center">
+										<button class="btn submitbtn w-50" type="submit">Submit</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				{% endblock %}
+				{% block scripts %}
+				<script type="text/javascript">
+					function readURL(input) {
+						if (input.files && input.files[0]) {
+							var reader = new FileReader();
+							reader.onload = function (e) { $('#imageResult').attr('src', e.target.result); };
+							reader.readAsDataURL(input.files[0]);
+						}
+					}
+					specids = document.querySelectorAll('[id^=spec]');
+					hdata = {{hdata|tojson|safe}};
+					if (hdata.length !== 0) {
+						$("#name").val(hdata[0]);
+						$("#imageResult").attr('src','/static/images/logo/'+hdata[1]);
+						$("#address").val(hdata[2]);
+						$("#phone").val(hdata[3]);
+						$("#email").val(hdata[4]);
+						specs = hdata[5].split(",");
+						specids.forEach(function(e) { if (specs.includes(e.value)) { $(e).prop('checked',true); } });
+					}
+				</script>
+				{% endblock %}
+				{% include 'footer.html' %}

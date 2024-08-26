@@ -1,0 +1,165 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h2 class="my-1 display-5 d-flex justify-content-center align-items-center bill-icon"><img src="/static/images/addbill.png" class="headerimg mx-2">{{title}}</h2>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<form action="/addbill" method="POST">
+							<div class="row p-3 gy-1">
+								<div class="col-12 col-md-3">
+									<label for="billnumber" class="form-label">Bill Number <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="bill-icon fa-solid fa-hashtag"></i></span>
+										<input type="text" class="form-control disabled" id="billnumber" name="billnumber" value="INV{{nextbillid}}" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-3">
+									<label for="billdate" class="form-label">Bill Date <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="bill-icon fa-solid fa-calendar-days"></i></span>
+										<input type="date" class="form-control" id="billdate" name="billdate" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="billdoctor" class="form-label">Doctor Name <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="bill-icon fa-solid fa-stethoscope"></i></span>
+										<select class="form-select" id="billdoctor" name="billdoctor" required>
+											<option value="" selected disabled>Select ...</option>
+											{% for row in doctors %}
+											<option value="{{row.docfullname}}">{{row.docfullname}}</option>
+											{% endfor %}
+											<option value="other">Other</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-12">
+									<label for="billpatdetails" class="form-label">Patient Name&emsp;|&emsp;ID&emsp;|&emsp;Phone&emsp;(search with name or id or phone number)<span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="bill-icon fa-solid fa-circle-info"></i></span>
+										<input list="billpatlist" type="text" class="form-select" id="billpatdetails" name="billpatdetails" required>
+										<datalist id="billpatlist">
+											{% for row in patients %}
+											<option>Name: {{row.patfullname}}&emsp;|&emsp;ID: {{row.patid}}&emsp;|&emsp;Phone: {{row.patphone}}</option>
+											{% endfor %}
+										</datalist>
+									</div>
+								</div>
+								<table class="table table-sm text-center mb-0">
+									<thead>
+										<tr>
+											<th scope="col">Item</th>
+											<th scope="col">Quantity</th>
+											<th scope="col">Rate (₹)</th>
+											<th scope="col">Total (₹)</th>
+										</tr>
+									</thead>
+									<tbody class="text-center">
+										<tr class="billitemrow">
+											<td>
+												<select class="form-select" id="billitem1" name="billitem1">
+													<option value="" selected disabled></option>
+													<option value="Consultation">Consultation</option>
+													<option value="Procedure">Procedure</option>
+													<option value="Injection">Injection</option>
+												</select>
+											</td>
+											<td><input type="number" class="form-control" id="billqty1" name="billqty1"></td>
+											<td><input type="number" class="form-control" id="billitemrate1" name="billitemrate1"></td>
+											<td><input type="number" class="form-control disabled" id="billitemtotal1" name="billitemtotal1"></td>
+										</tr>
+										<tr class="billitemrow">
+											<td>
+												<select class="form-select" id="billitem2" name="billitem2">
+													<option value="" selected disabled></option>
+													<option value="Consultation">Consultation</option>
+													<option value="Procedure">Procedure</option>
+													<option value="Injection">Injection</option>
+												</select>
+											</td>
+											<td><input type="number" class="form-control" id="billqty2" name="billqty2"></td>
+											<td><input type="number" class="form-control" id="billitemrate2" name="billitemrate2"></td>
+											<td><input type="number" class="form-control disabled" id="billitemtotal2" name="billitemtotal2"></td>
+										</tr>
+										<tr class="billitemrow">
+											<td>
+												<select class="form-select" id="billitem3" name="billitem3">
+													<option value="" selected disabled></option>
+													<option value="Consultation">Consultation</option>
+													<option value="Procedure">Procedure</option>
+													<option value="Injection">Injection</option>
+												</select>
+											</td>
+											<td><input type="number" class="form-control" id="billqty3" name="billqty3"></td>
+											<td><input type="number" class="form-control" id="billitemrate3" name="billitemrate3"></td>
+											<td><input type="number" class="form-control disabled" id="billitemtotal3" name="billitemtotal3"></td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<th colspan="2"></th>
+											<th colspan="1">Bill Total (₹)</th>
+											<th colspan="1"><input type="number" class="form-control disabled" id="billtotal" name="billtotal"></th>
+										</tr>
+									</tfoot>
+								</table>
+								<div class="col-12 col-md-6">
+									<label for="billstatus" class="form-label">Bill Payment Status <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="bill-icon fa-solid fa-star"></i></span>
+										<select class="form-select" id="billstatus" name="billstatus" required>
+											<option value="" selected></option>
+											<option value="Paid">Paid</option>
+											<option value="Unpaid">Unpaid</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="billmode" class="form-label">Payment Mode <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class=" bill-icon fa-solid fa-credit-card"></i></span>
+										<select class="form-select" id="billmode" name="billmode" required>
+											<option value="" selected></option>
+											<option value="Cash">Cash</option>
+											<option value="UPI">UPI</option>
+											<option value="Card">Card</option>
+											<option value="Others">Others</option>
+										</select>
+									</div>
+								</div>
+								<div class="col">
+									<div class="d-flex justify-content-center">
+										<button class="btn submitbtn w-50" type="submit">Submit</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				{% endblock %}
+				{% block scripts %}
+				<script type="text/javascript">
+					$(document).ready(function() {
+						$("#billdate").val(new Date().toLocaleDateString().split("/").reverse().join("-"));
+						$(".billitemrow").keyup(function(event) {
+							var total = 0;
+							$(".billitemrow").each(function() {
+								var qty = parseInt($(this).find("[id^=billqty]").val());
+								var rate = parseInt($(this).find("[id^=billitemrate]").val());
+								var subtotal = qty * rate;
+								$(this).find("[id^=billitemtotal]").val(subtotal);
+								total += isNaN(subtotal)? 0 : subtotal;
+							});
+							$("#billtotal").val(total);
+						});
+					});
+					// setTimeout(function() { $(".alert").alert('close'); }, 3000);
+				</script>
+				{% endblock %}
+				{% include 'footer.html' %}

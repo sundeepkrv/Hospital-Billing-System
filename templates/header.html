@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-5.3.3.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/fontawesome-6.5.2.all.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/dataTables-2.1.0.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/customstyle.css">
+		<script type="text/javascript" src="/static/js/bootstrap-5.3.3.bundle.js"></script>
+		<script type="text/javascript" src="/static/js/jquery-3.6.4.min.js"></script>
+		<script type="text/javascript" src="/static/js/fontawesome-6.5.2.all.min.js"></script>
+		<script type="text/javascript" src="/static/js/dataTables-2.1.0.min.js"></script>
+		<script type="text/javascript" src="/static/js/dataTables.buttons-3.1.1.min.js"></script>
+		<script type="text/javascript" src="/static/js/buttons.html5-3.1.1.min.js"></script>
+		<script type="text/javascript" src="/static/js/jszip-3.10.1.min.js"></script>
+		<script type="text/javascript" src="/static/js/pdfmake-0.2.7.min.js"></script>
+		<script type="text/javascript" src="/static/js/vfs_fonts-0.2.7.js"></script>
+		<script type="text/javascript" src="/static/js/apexcharts-3.52.0.js"></script>
+		<link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
+		<title>{{title}}</title>
+	</head>
+	<body class="bg-light">
+		<nav class="navbar navbar-bg sticky-top rounded-pill px-3">
+			<div class="container-fluid">
+				<a class="navbar-brand d-flex align-items-center" href="{{url_for('dashboard')}}"><img src="/static/images/logo/{{hdata[1]}}" alt="Logo" class="img-fluid logoimg mx-2"></a>
+				<div class="navbar-nav">
+					<a class="nav-item nav-link logout non-printable" href="{{url_for('logout')}}"><i class="fa-solid fa-right-from-bracket px-2"></i>Logout</a>
+				</div>
+			</div>
+		</nav>
+		{% with msg = get_flashed_messages(with_categories=True) %}
+		{% if msg %}
+		{% for category, message in msg %}
+		<div class="alert alert-{{category}} fade show rounded-pill position-fixed end-0 text-center" role="alert">
+			<strong class="small">{{message}}</strong>
+		</div>
+		{% endfor %}
+		{% endif %}
+		{% endwith %}
+		<div class="container-fluid">
+			<div class="row p-3 gy-2">
+				<div class="col-sm-2 non-printable">
+					<div class="vertical-nav py-3">
+						<ul class="nav flex-column">
+							<li class="nav-item"><a href="{{url_for('dashboard')}}" class="nav-link"><i class="fa-solid fa-square-poll-vertical me-1"></i>Dashboard</a></li>
+						</ul>
+						<hr class="my-2" />
+						<p class="text-danger fw-bold px-3 m-0">BILLS</p>
+						<ul class="nav flex-column">
+							<li class="nav-item"><a href="{{url_for('bills')}}" class="nav-link"><i class="fa-solid fa-file-invoice me-1"></i>All Bills</a></li>
+							<li class="nav-item"><a href="{{url_for('addbill')}}" class="nav-link"><i class="fa-solid fa-plus me-1"></i>Add Bill</a></li>
+						</ul>
+						<hr class="my-2" />
+						<p class="text-danger fw-bold px-3 m-0">PATIENTS</p>
+						<ul class="nav flex-column">
+							<li class="nav-item"><a href="{{url_for('patients')}}" class="nav-link"><i class="fa-solid fa-bed me-1"></i>All Patients</a></li>
+							<li class="nav-item"><a href="{{url_for('addpatient')}}" class="nav-link"><i class="fa-solid fa-plus me-1"></i>Add Patient</a></li>
+						</ul>
+						<hr class="my-2" />
+						<p class="text-danger fw-bold px-3 m-0">DOCTORS</p>
+						<ul class="nav flex-column">
+							<li class="nav-item"><a href="{{url_for('doctors')}}" class="nav-link"><i class="fa-solid fa-user-doctor me-1"></i>All Doctors</a></li>
+							<li class="nav-item"><a href="{{url_for('adddoctor')}}" class="nav-link"><i class="fa-solid fa-plus me-1"></i>Add Doctor</a></li>
+						</ul>
+						<hr class="my-2" />
+						<p class="text-danger fw-bold px-3 m-0">HOSPITAL</p>
+						<ul class="nav flex-column">
+							<li class="nav-item"><a href="{{url_for('hospital')}}" class="nav-link"><i class="fa-solid fa-hospital me-1"></i>My Hospital</a></li>
+						</ul>
+						<hr class="my-2">
+						<span class="px-3 small fw-bold text-secondary">Logged in as Admin</span>
+					</div>
+				</div>
+				{% block body %}
+
+				{% endblock %}

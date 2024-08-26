@@ -1,0 +1,108 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10 printable">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h2 class="my-1 display-5 d-flex justify-content-center align-items-center doc-icon"><img src="/static/images/doctor.png" class=" headerimg mx-2">{{title}}</h2>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<div class="row p-3 gy-1">
+							<div class="col-3">
+								<label for="docid" class="form-label">Doctor ID</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-hashtag"></i></span>
+									<input type="text" class="form-control" id="docid" name="docid" disabled>
+								</div>
+							</div>
+							<div class="col-9">
+								<label for="docfullname" class="form-label">Doctor Full Name</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-address-card"></i></span>
+									<input type="text" class="form-control" id="docfullname" name="docfullname" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="docdob" class="form-label">Date of Birth</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-calendar-days"></i></span>
+									<input type="text" class="form-control" id="docdob" name="docdob" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="docgender" class="form-label">Gender</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-venus-mars"></i></span>
+									<input type="text" class="form-control" id="docgender" name="docgender" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="docemail" class="form-label">Email ID</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-envelope"></i></span>
+									<input type="text" class="form-control" id="docemail" name="docemail" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="docphone" class="form-label">Phone Number</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-phone"></i></span>
+									<input type="text" class="form-control" id="docphone" name="docphone" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="docqual" class="form-label">Qualifications</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-graduation-cap"></i></span>
+									<input type="text" class="form-control" id="docqual" name="docqual" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="docexp" class="form-label">Experience</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-star"></i></span>
+									<input type="text" class="form-control" id="docexp" name="docexp" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="docspec" class="form-label">Specialization</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-ranking-star"></i></span>
+									<input type="text" class="form-control" id="docspec" name="docspec" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="docaltphone" class="form-label">Alternate Phone Number</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-phone"></i></span>
+									<input type="text" class="form-control" id="docaltphone" name="docaltphone" disabled>
+								</div>
+							</div>
+							<div class="col-12">
+								<label for="docaddress" class="form-label">Address</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="doc-icon fa-solid fa-map-location"></i></span>
+									<input type="text" class="form-control" id="docaddress" name="docaddress" disabled>
+								</div>
+							</div>
+							<div class="col-6 my-3 text-center">
+								<a href="{{url_for('doctors')}}" class="btn w-75 btn-info non-printable"><i class="fa-solid fa-turn-up fa-rotate-270 mx-2"></i>Go Back</a>
+							</div>
+							<div class="col-6 my-3 text-center">
+								<a onclick="window.print();" class="btn w-75 btn-warning non-printable"><i class="fa-solid fa-print mx-2"></i>Print</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endblock %}
+				{% block scripts %}
+				<script type="text/javascript">
+					ids = document.querySelectorAll('[id]');
+					ddata = {{docdata|tojson|safe}}.slice(1,-1)
+					ids.forEach(function(val,idx) { $('#'+val.id).val(ddata[idx]) });
+				</script>
+				{% endblock %}
+				{% include 'footer.html' %}

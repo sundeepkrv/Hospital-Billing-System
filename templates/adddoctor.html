@@ -1,0 +1,113 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h2 class="my-1 display-5 d-flex justify-content-center align-items-center doc-icon"><img src="/static/images/adddoctor.png" class="headerimg mx-2">{{title}}</h2>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<form action="/adddoctor" method="POST">
+							<div class="row p-3 gy-1">
+								<div class="col-2">
+									<label for="docid" class="form-label">Doctor ID <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-hashtag"></i></span>
+										<input type="text" class="form-control disabled" id="docid" name="docid" value="D{{nextdocid}}">
+									</div>
+								</div>
+								<div class="col-10">
+									<label for="docfullname" class="form-label">Doctor Full Name <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-address-card"></i></span>
+										<input type="text" class="form-control" id="docfullname" name="docfullname" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="docdob" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-calendar-days"></i></span>
+										<input type="date" class="form-control" id="docdob" name="docdob" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="docgender" class="form-label">Gender <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-venus-mars"></i></span>
+										<select class="form-select" id="docgender" name="docgender" required>
+											<option value="" selected disabled>Select ...</option>
+											<option value="Male">Male</option>
+											<option value="Female">Female</option>
+											<option value="Others">Others</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="docemail" class="form-label">Email ID <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-envelope"></i></span>
+										<input type="email" class="form-control" id="docemail" name="docemail" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="docphone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-phone"></i></span>
+										<input type="tel" class="form-control" id="docphone" name="docphone" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="docqual" class="form-label">Qualifications <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-graduation-cap"></i></span>
+										<input type="text" class="form-control" id="docqualification" name="docqual" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="docexp" class="form-label">Experience <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-star"></i></span>
+										<input type="text" class="form-control" id="docexp" name="docexp" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="docspec" class="form-label">Specialization <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-ranking-star"></i></span>
+										<select class="form-select" id="docspec" name="docspec" required>
+											<option value="" selected disabled>Select ...</option>
+											{% for item in specs %}
+											<option value="{{item}}">{{item}}</option>
+											{% endfor %}
+											<option value="Others">Others</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="docaltphone" class="form-label">Alternate Phone Number <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-phone"></i></span>
+										<input type="tel" class="form-control" id="docaltphone" name="docaltphone" required>
+									</div>
+								</div>
+								<div class="col-12">
+									<label for="docaddress" class="form-label">Address <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="doc-icon fa-solid fa-map-location"></i></span>
+										<input type="text" class="form-control" id="docaddress" name="docaddress" required>
+									</div>
+								</div>
+								<div class="col">
+									<div class="d-flex justify-content-center">
+										<button class="btn submitbtn w-50" type="submit">Submit</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				{% endblock %}
+				{% include 'footer.html' %}

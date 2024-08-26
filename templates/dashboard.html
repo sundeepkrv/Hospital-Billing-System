@@ -1,0 +1,122 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10 printable">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h2 class="my-1 display-5 d-flex justify-content-center align-items-center dash-icon"><img src="/static/images/dashboard.png" class="headerimg mx-2">{{title}}</h2>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<form action="/dashboard" method="POST">
+							<div class="row p-2 gy-2">
+								<div class="col-xl-3 col-sm-6 col-12">
+									<div class="card rounded-pill bg-body-tertiary shadow">
+										<div class="card-body p-0">
+											<div class="media d-flex justify-content-around">
+												<div class="media-body text-center">
+													<h2 id="income" class="m-0" style="color: #00B5B8;"></h2>
+													<h6 class="text-secondary">Amount (₹)</h6>
+												</div>
+												<div class="align-self-center">
+													<i class="fa-solid fa-coins fa-3x" style="color: #00B5B8;"></i>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-3 col-sm-6 col-12">
+									<div class="card rounded-pill bg-body-tertiary shadow">
+										<div class="card-body p-0">
+											<div class="media d-flex justify-content-around">
+												<div class="media-body text-center">
+													<h2 id="nbills" class="m-0" style="color: #FF7588;"></h2>
+													<h6 class="text-secondary">Bills</h6>
+												</div>
+												<div class="align-self-center">
+													<i class="fa-solid fa-receipt fa-3x" style="color: #FF7588;"></i>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-3 col-sm-6 col-12">
+									<div class="card rounded-pill bg-body-tertiary shadow">
+										<div class="card-body p-0">
+											<div class="media d-flex justify-content-around">
+												<div class="media-body text-center">
+													<h2 id="npats" class="m-0" style="color: #FD7E14;"></h2>
+													<h6 class="text-secondary">Patients</h6>
+												</div>
+												<div class="align-self-center">
+													<i class="fa-solid fa-bed fa-3x" style="color: #FD7E14;"></i>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-3 col-sm-6 col-12">
+									<div class="card rounded-pill bg-body-tertiary shadow">
+										<div class="card-body p-0">
+											<div class="media d-flex justify-content-around">
+												<div class="media-body text-center">
+													<h2 id="ndocs" class="m-0" style="color: #1E90FF;"></h2>
+													<h6 class="text-secondary">Doctors</h6>
+												</div>
+												<div class="align-self-center">
+													<i class="fa-solid fa-user-doctor fa-3x" style="color: #1E90FF;"></i>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<form action="/dashboard" method="POST">
+								<div class="text-center mt-2">
+									<div class="d-inline-flex align-items-center">
+										<span class="text-nowrap fw-bold mx-2">Billing:</span>
+										<span>From</span>
+										<input type="date" class="form-control mx-2" name="startdate" id="startdate" value="{{dashdata[4]}}">
+										<span>To</span>
+										<input type="date" class="form-control mx-2" name="enddate" id="enddate" value="{{dashdata[5]}}">
+										<button type="submit" class="btn submitbtn" id="datefilter"><i class="fa-solid fa-search"></i></button>
+									</div>
+								</div>
+							</form>
+							<div class="row p-3 rounded-3">
+								<div id="chart"></div>
+							</div>
+							<div class="text-center text-secondary small pb-2"><strong>Notes: </strong>Above dashboard shows data for last 180 days only. Use date filters for more date ranges. Drag on the chart to zoom into more dates.<br>Click <i class="dash-icon fa-solid fa-home"></i> on the top right of the chart to reset view. Click <i class="dash-icon fa-solid fa-bars"></i> on the top right of the chart to download the chart as SVG/PNG/CSV.</div>
+						</form>
+					</div>
+				</div>
+				{% endblock %}
+				{% block scripts %}
+				<script type="text/javascript">
+					var date = new Date();
+					$("#income").html(parseInt('{{dashdata[0]}}').toLocaleString('en-IN'));
+					$("#nbills").html(parseInt('{{dashdata[1]}}').toLocaleString('en-IN'));
+					$("#npats").html(parseInt('{{dashdata[2]}}').toLocaleString('en-IN'));
+					$("#ndocs").html(parseInt('{{dashdata[3]}}').toLocaleString('en-IN'));
+					$("#start").html('{{dashdata[4]}}');
+					$("#end").html('{{dashdata[5]}}');
+					var options = {
+						series: [{ name: 'Billing Amount (₹)', data: {{chartdata[1]|tojson|safe}} }],
+						labels: {{chartdata[0]|tojson|safe}},
+						chart: { type: 'area', height: 300, zoom: { autoScaleYaxis: true } },
+						dataLabels: { enabled: false },
+						stroke: { curve: 'smooth' },
+						xaxis: { type: 'datetime', },
+						yaxis: { opposite: false },
+						legend: { horizontalAlign: 'left' },
+						tooltip: { x: { format: 'dd MMM yyyy' } },
+						fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.95, stops: [0, 100] } },
+						colors: ['#45b39d'],
+					};
+					var chart = new ApexCharts(document.querySelector("#chart"), options);
+					chart.render();
+				</script>
+				{% endblock %}
+				{% include 'footer.html' %}

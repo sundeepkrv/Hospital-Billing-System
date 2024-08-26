@@ -1,0 +1,23 @@
+				{% block body %}
+						</div>
+							<footer class="footbar sticky-bottom text-white text-center small">
+								<span>&copy; 2024 All rights reserved. <strong>{{hdata[0]}}</strong>. <i class="fa-solid fa-map-location text-info mx-2"></i>{{hdata[2]}} <i class="fa-solid fa-phone-volume text-info mx-2"></i>{{hdata[3]}} <i class="fa-solid fa-envelope text-info mx-2"></i>{{hdata[4]}}</span><br>
+								<span type="button" data-bs-toggle="modal" data-bs-target="#footerModal">Designed with ❤️ using Python-Flask</span>
+							</footer>
+							<div class="modal fade" id="footerModal" tabindex="-1" aria-labelledby="footerModal" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-body text-center text-success">
+											<p class="text-center text-success">Desgined and developed by Sundeep KRV.<br>For more projects, check my <a href="https://github.com/sundeepkrv" target="_blank">Github profle</a>.</p>
+											<p class="text-center text-danger"><strong>Disclaimer: </strong>This app is not intended for production use. Kindly follow due deligence.</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<script type="text/javascript">
+							setTimeout(function() { $(".alert").alert('close'); }, 3000);
+						</script>
+					</body>
+				</html>
+				{% endblock %}

@@ -1,0 +1,114 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10 printable">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h2 class="my-1 display-5 d-flex justify-content-center align-items-center bill-icon"><img src="/static/images/bill.png" class="headerimg mx-2">{{title}}</h2>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<div class="table-responsive">
+							<div class="text-center mt-1 mb-0">
+								<div class="d-inline-flex align-items-center">
+									<span class="text-nowrap fw-bold text-primary mx-2">Date Filter:</span>
+									<span class="text-nowrap">From</span>
+									<input type="date" class="form-control mx-2" id="min" value="{{mindate}}">
+									<span class="text-nowrap">To</span>
+									<input type="date" class="form-control mx-2" id="max" value="{{maxdate}}">
+									<button class="btn btn-outline-success text-nowrap mx-2 excel">Export to Excel <i class="fa-solid fa-file-excel"></i></button>
+									<button class="btn btn-outline-danger text-nowrap mx-2 pdf">Export to PDF <i class="fa-solid fa-file-lines"></i></button>
+								</div>
+							</div>
+							<form action="/bills" method="POST">
+								<div class="row mt-0 px-4 gy-2">
+									<table id="billtable" class="table table-striped">
+										<thead class="thead">
+											<tr>
+												<th class="text-center">Sl.</th>
+												<th>Bill #</th>
+												<th>Patient Details</th>
+												<th>Date</th>
+												<th>Amount (₹)</th>
+												<th>Status/Mode</th>
+												<th>Action<i class="fa-solid fa-gear mx-1"></i></th>
+											</tr>
+										</thead>
+										<tbody id="tbody">
+											{% for row in bills %}
+											<tr>
+												<td class="text-center">{{loop.index}}</td>
+												<td>{{row.billnumber}}</td>
+												<td>{{row.billpatdetails}}</td>
+												<td>{{row.billdate}}</td>
+												<td>{{row.billtotal}}</td>
+												<td>{{row.billstatus}}/{{row.billmode}}</td>
+												<td>
+													<a href="{{url_for('editbill',uid=row.billnumber)}}" data-bs-toggle="tooltip" data-bs-title="Edit"><i class="text-primary fa-solid fa-pen-to-square mx-1"></i></a>
+													<a href="{{url_for('viewbill',uid=row.billnumber)}}" data-bs-toggle="tooltip" data-bs-title="View"><i class="text-success fa-solid fa-eye mx-1"></i></a>
+													<a href="#" data-href="{{url_for('deletebill',uid=row.billnumber)}}" data-bs-toggle="modal" data-bs-target="#confirm-delete"><i class="text-danger fa-solid fa-trash-can mx-1"></i></a>
+												</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+										<tfoot id="tfoot">
+											<tr>
+												<th colspan="6" class="text-end"></th>
+												<th colspan="1"></th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body text-center">
+								<p>Entry can't be restored once deleted.</p>
+								<p>Are you sure you want to delete?</p>
+								<span class="d-flex justify-content-evenly">
+									<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+									<a class="btn btn-danger btn-ok">Delete</a>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endblock %}
+				{% block scripts %}
+				<script type="text/javascript">
+					DataTable.ext.search.push(function( settings, data, dataIndex ) {
+						var min = $('#min').val();
+						var max = $('#max').val();
+						var bdate = data[3];
+						if ((min === null && max === null) || (min === null && bdate<=max) || (min<=bdate && max === null) || (min<=bdate && bdate<=max)) { return true; }
+						return false;
+					});
+					var billtable = new DataTable("#billtable", {
+						ordering: false,
+						footerCallback: function (row, data, start, end, display) {
+							let api = this.api();
+							let intVal = function (i) { return typeof i === 'string' ? i.replace(/,/g, '') * 1 : typeof i === 'number' ? i : 0; };
+							total = api.column(4, {search: 'applied'}).data().reduce((a, b) => intVal(a) + intVal(b), 0);
+							pageTotal = api.column(4, { page: 'current' }).data().reduce((a, b) => intVal(a) + intVal(b), 0);
+							api.column(1).footer().innerHTML = '<span class=text-primary px-1>Page Total: ₹ ' + pageTotal.toLocaleString('en-IN') + '</span> | <span class=text-danger px-1>Grand Total: ' + '₹ ' + total.toLocaleString('en-IN') + '</span>';
+						},
+						buttons:[ {extend:'excel',footer:false,title:'Bills Details as on '+new Date().toLocaleDateString().split("/").reverse().join("-")}, {extend:'pdf',footer:false,title:'Bills Details as on '+new Date().toLocaleDateString().split("/").reverse().join("-")}]
+					});
+		 			$('#min, #max').on('change', function() { billtable.draw() });
+		 			$('.excel').on('click', function() { $('#billtable').DataTable().buttons(0).trigger(); });
+		 			$('.pdf').on('click', function() { $('#billtable').DataTable().buttons(1).trigger(); });
+		 			// setTimeout(function() { $(".alert").alert('close'); }, 3000);
+		 			$('#confirm-delete').on('show.bs.modal', function(e) {
+						$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+					});
+					const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+					const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+				</script>
+				{% endblock %}
+				{% include 'footer.html' %}

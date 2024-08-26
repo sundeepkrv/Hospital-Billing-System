@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-5.3.3.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/fontawesome-6.5.2.all.min.css">
+		<link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
+		<style type="text/css">
+		</style>
+		<title>My Hospital Login</title>
+	</head>
+	<body class="bg-light">
+		<div class="container my-4">
+			<div class="row justify-content-center">
+				<div class="col-12 col-md-8 col-lg-4">
+					<div class="card border border-light-subtle rounded-4">
+						<div class="card-body p-3 p-md-4 p-xl-5">
+							<div class="text-center mb-4">
+								<img src="static/images/logo/{{loginlogo}}" width='200' onerror="this.onerror=null; this.src='/static/images/logo.png';" />
+								<h1 class="display-6">Login</h1>
+							</div>
+							<form action="/login" method="POST">
+								<div class="row gy-3 overflow-hidden">
+									<div class="col-12">
+										<div class="form-floating mb-3">
+											<input type="text" class="form-control" name="username" id="username" placeholder="Enter Username" required>
+											<label for="username" class="form-label text-secondary">Enter Username</label>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="form-floating mb-3">
+											<input type="password" class="form-control" name="password" id="password" placeholder="Enter Password" required>
+											<label for="password" class="form-label text-secondary">Enter Password</label>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="form-check">
+											<label class="form-check-label text-secondary" for="remember"> Keep me logged in</label>
+											<input class="form-check-input" type="checkbox" value="" name="remember" id="remember" checked>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="d-grid">
+											<button class="btn btn-primary btn-lg" type="submit">Log in</button>
+										</div>
+									</div>
+									{% with msg = get_flashed_messages(with_categories=True) %}
+									{% if msg %}
+									{% for category, message in msg %}
+									<div class="alert alert-{{category}} fade show text-center small p-3" role="alert">
+										<strong>{{message}}</strong>
+									</div>
+									{% endfor %}
+									{% endif %}
+									{% endwith %}
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="sticky-bottom text-center small">
+			<span type="button" data-bs-toggle="modal" data-bs-target="#footerModal">Designed with ❤️ using Python-Flask</span>
+		</footer>
+		<div class="modal fade" id="footerModal" tabindex="-1" aria-labelledby="footerModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body text-center text-success">
+						<p class="text-center text-success">Desgined and developed by Sundeep KRV.<br>For more projects, check my <a href="https://github.com/sundeepkrv" target="_blank">Github profle</a>.</p>
+						<p class="text-center text-danger"><strong>Disclaimer: </strong>This app is not intended for production use.<br>Kindly follow due deligence.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/static/js/bootstrap-5.3.3.bundle.js"></script>
+		<script type="text/javascript" src="/static/js/jquery-3.6.4.min.js"></script>
+		<script type="text/javascript" src="/static/js/fontawesome-6.5.2.all.min.js"></script>
+		<script type="text/javascript">
+			setTimeout(function() { $(".alert").alert('close'); }, 3000);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,79 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10 printable">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h2 class="my-1 display-5 d-flex justify-content-center align-items-center doc-icon"><img src="/static/images/doctor.png" class="headerimg mx-2">{{title}}</h2>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<div class="table-responsive">
+							<form action="/doctors" method="POST">
+								<div class="row px-4 gy-2">
+									<table id="doctable" class="table table-striped">
+										<thead class="thead">
+											<tr>
+												<th>Doctor ID</th>
+												<th>Doctor Name</th>
+												<th>Gender</th>
+												<th>Qualifications</th>
+												<th>Specialization</th>
+												<th>Experience</th>
+												<th>Phone Number</th>
+												<th>Action&ensp;<i class="faicon fa-solid fa-gear"></i></th>
+											</tr>
+										</thead>
+										<tbody id="tbody">
+											{% for row in doctors %}
+											<tr>
+												<td>{{row.docid}}</td>
+												<td>{{row.docfullname}}</td>
+												<td>{{row.docgender}}</td>
+												<td>{{row.docqual}}</td>
+												<td>{{row.docspec}}</td>
+												<td>{{row.docexp}}</td>
+												<td>{{row.docphone}}</td>
+												<td>
+													<a href="{{url_for('editdoctor',uid=row.docid)}}" data-bs-toggle="tooltip" data-bs-title="Edit"><i class="text-primary fa-solid fa-pen-to-square mx-1"></i></a>
+													<a href="{{url_for('viewdoctor',uid=row.docid)}}" data-bs-toggle="tooltip" data-bs-title="View"><i class="text-success fa-solid fa-eye mx-1"></i></a>
+													<a href="" data-href="{{url_for('deletedoctor',uid=row.docid)}}" data-bs-toggle="modal" data-bs-target="#confirm-delete"><i class="text-danger fa-solid fa-trash-can mx-1"></i></a>
+												</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body text-center">
+								<p>Entry can't be restored once deleted.</p>
+								<p>Are you sure you want to delete?</p>
+								<span class="d-flex justify-content-evenly">
+									<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+									<a class="btn btn-danger btn-ok">Delete</a>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endblock %}
+				{% block scripts %}
+				<script type="text/javascript">
+					new DataTable("#doctable", { ordering: false });
+					setTimeout(function() { $(".alert").alert('close'); }, 3000);
+					$('#confirm-delete').on('show.bs.modal', function(e) {
+						$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+					});
+					const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+					const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+				</script>
+				{% endblock %}
+				{% include 'footer.html' %}

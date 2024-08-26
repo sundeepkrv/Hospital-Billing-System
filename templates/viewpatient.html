@@ -1,0 +1,94 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10 printable">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h2 class="my-1 display-5 d-flex justify-content-center align-items-center pat-icon"><img src="/static/images/patient.png" class="headerimg mx-2">{{title}}</h2>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<div class="row p-3 gy-1">
+							<div class="col-md-4 col-12">
+								<label for="patid" class="form-label">Patient ID</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="pat-icon fa-solid fa-hashtag"></i></span>
+									<input type="text" class="form-control" id="patid" name="patid" disabled>
+								</div>
+							</div>
+							<div class="col-md-8 col-12">
+								<label for="patfullname" class="form-label">Full Name</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="pat-icon fa-solid fa-address-card"></i></span>
+									<input type="text" class="form-control" id="patfullname" name="patfullname" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="patdob" class="form-label">Date of Birth</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="pat-icon fa-solid fa-calendar-days"></i></span>
+									<input type="text" class="form-control" id="patdob" name="patdob" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="patgender" class="form-label">Gender</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="pat-icon fa-solid fa-venus-mars"></i></span>
+									<input type="text" class="form-control" id="patgender" name="patgender" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="patemail" class="form-label">Email ID</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="pat-icon fa-solid fa-envelope"></i></span>
+									<input type="text" class="form-control" id="patemail" name="patemail" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="patphone" class="form-label">Phone Number</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="pat-icon fa-solid fa-phone"></i></span>
+									<input type="text" class="form-control" id="patphone" name="patphone" disabled>
+								</div>
+							</div>
+							<div class="col-12">
+								<label for="pataddress" class="form-label">Address</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="pat-icon fa-solid fa-map-location"></i></span>
+									<input type="text" class="form-control" id="pataddress" name="pataddress" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="pataltcontact" class="form-label">Emergency Contact Number</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="pat-icon fa-solid fa-phone"></i></span>
+									<input type="text" class="form-control" id="pataltcontact" name="pataltcontact" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="patrelation" class="form-label">Emergency Contact Relation</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="pat-icon fa-solid fa-diagram-project"></i></span>
+									<input type="text" class="form-control" id="patrelation" name="patrelation" disabled>
+								</div>
+							</div>
+							<div class="col-6 my-3 text-center">
+								<a href="{{url_for('patients')}}" class="btn w-75 btn-info non-printable"><i class="fa-solid fa-turn-up fa-rotate-270 mx-2"></i>Go Back</a>
+							</div>
+							<div class="col-6 my-3 text-center">
+								<a onclick="window.print();" class="btn w-75 btn-warning non-printable"><i class="fa-solid fa-print mx-2"></i>Print</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endblock %}
+				{% block scripts %}
+				<script type="text/javascript">
+					ids = document.querySelectorAll('[id]');
+					pdata = {{patdata|tojson|safe}}.slice(1,-1)
+					ids.forEach(function(val,idx) { $('#'+val.id).val(pdata[idx]) });
+				</script>
+				{% endblock %}
+				{% include 'footer.html' %}

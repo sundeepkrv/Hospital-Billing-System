@@ -1,0 +1,107 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10 printable">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h2 class="my-1 display-5 d-flex justify-content-center align-items-center pat-icon"><img src="/static/images/editpatient.png" class="headerimg mx-2">{{title}}</h2>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<form action="{{url_for('editpatient',uid=patdata[0])}}" method="POST">
+							<div class="row p-3 gy-1">
+								<div class="col-md-4 col-12">
+									<label for="patid" class="form-label">Patient ID <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="pat-icon fa-solid fa-hashtag"></i></span>
+										<input type="text" class="form-control disabled" id="patid" name="patid" required>
+									</div>
+								</div>
+								<div class="col-md-8 col-12">
+									<label for="patfullname" class="form-label">Full Name <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="pat-icon fa-solid fa-address-card"></i></span>
+										<input type="text" class="form-control" id="patfullname" name="patfullname" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="patdob" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="pat-icon fa-solid fa-calendar-days"></i></span>
+										<input type="date" class="form-control" id="patdob" name="patdob" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="patgender" class="form-label">Gender <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="pat-icon fa-solid fa-venus-mars"></i></span>
+										<select class="form-select" id="patgender" name="patgender" required>
+											<option value="Male">Male</option>
+											<option value="Female">Female</option>
+											<option value="Others">Others</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="patemail" class="form-label">Email ID <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="pat-icon fa-solid fa-envelope"></i></span>
+										<input type="email" class="form-control" id="patemail" name="patemail" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="patphone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="pat-icon fa-solid fa-phone"></i></span>
+										<input type="tel" class="form-control" id="patphone" name="patphone" required>
+									</div>
+								</div>
+								<div class="col-12">
+									<label for="pataddress" class="form-label">Address <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="pat-icon fa-solid fa-map-location"></i></span>
+										<input type="text" class="form-control" id="pataddress" name="pataddress" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="pataltcontact" class="form-label">Emergency Contact Number <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="pat-icon fa-solid fa-phone"></i></span>
+										<input type="text" class="form-control" id="pataltcontact" name="pataltcontact" required>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="patrelation" class="form-label">Emergency Contact Relation <span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="pat-icon fa-solid fa-diagram-project"></i></span>
+										<select class="form-select" id="patrelation" name="patrelation" required>
+											<option value="Self">Self</option>
+											<option value="Husband">Husband</option>
+											<option value="Wife">Wife</option>
+											<option value="Mother">Mother</option>
+											<option value="Father">Father</option>
+											<option value="Other">Other</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-6 my-3 text-center">
+									<a href="{{url_for('patients')}}" class="btn btn-info w-75"><i class="fa-solid fa-turn-up fa-rotate-270 mx-2"></i>Go Back</a>
+								</div>
+								<div class="col-6 my-3 text-center">
+									<button class="btn submitbtn w-75" type="submit">Submit</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				{% endblock %}
+				{% block scripts %}
+				<script type="text/javascript">
+					ids = document.querySelectorAll('[id]');
+					pdata = {{patdata|tojson|safe}}.slice(1,-1)
+					ids.forEach(function(val,idx) { $('#'+val.id).val(pdata[idx]) });
+				</script>
+				{% endblock %}
+				{% include 'footer.html' %}

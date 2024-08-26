@@ -1,0 +1,110 @@
+				{% include 'header.html' %}
+				{% block body %}
+				<div class="col-sm-10 printable">
+					<div class="bg-white border rounded-5 shadow-lg overflow-hidden">
+						<div class="row justify-content-md-center">
+							<div class="col-12">
+								<h2 class="my-1 display-5 d-flex justify-content-center align-items-center bill-icon"><img src="/static/images/bill.png" class="headerimg mx-2">{{title}}</h2>
+							</div>
+						</div>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"></div>
+						</div>
+						<div class="row p-3 gy-1">
+							<div class="col-12 col-md-3">
+								<label for="billnumber" class="form-label">Bill Number</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="bill-icon fa-solid fa-hashtag"></i></span>
+									<input type="text" class="form-control" id="billnumber" name="billnumber" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-3">
+								<label for="billdate" class="form-label">Bill Date</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="bill-icon fa-solid fa-calendar-days"></i></span>
+									<input type="text" class="form-control" id="billdate" name="billdate" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="billdoctor" class="form-label">Doctor Name</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="bill-icon fa-solid fa-stethoscope"></i></span>
+									<input type="text" class="form-control" id="billdoctor" name="billdoctor" disabled>
+								</div>
+							</div>
+							<div class="col-12">
+								<label for="billpatdetails" class="form-label">Patient Name&emsp;|&emsp;ID&emsp;|&emsp;Phone</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="bill-icon fa-solid fa-circle-info"></i></span>
+									<input type="text" class="form-control" id="billpatdetails" name="billpatdetails" disabled>
+								</div>
+							</div>
+							<table class="table table-sm text-center mb-0">
+								<thead>
+									<tr>
+										<th scope="col">Item</th>
+										<th scope="col">Quantity</th>
+										<th scope="col">Rate (₹)</th>
+										<th scope="col">Total (₹)</th>
+									</tr>
+								</thead>
+								<tbody class="text-center">
+									<tr class="billitemrow">
+										<td><input type="text" class="form-control" id="billitem1" name="billitem1" disabled></td>
+										<td><input type="text" class="form-control" id="billqty1" name="billqty1" disabled></td>
+										<td><input type="text" class="form-control" id="billitemrate1" name="billitemrate1" disabled></td>
+										<td><input type="text" class="form-control" id="billitemtotal1" name="billitemtotal1" disabled></td>
+									</tr>
+									<tr class="billitemrow">
+										<td><input type="text" class="form-control" id="billitem2" name="billitem2" disabled></td>
+										<td><input type="text" class="form-control" id="billqty2" name="billqty2" disabled></td>
+										<td><input type="text" class="form-control" id="billitemrate2" name="billitemrate2" disabled></td>
+										<td><input type="text" class="form-control" id="billitemtotal2" name="billitemtotal2" disabled></td>
+									</tr>
+									<tr class="billitemrow">
+										<td><input type="text" class="form-control" id="billitem3" name="billitem3" disabled></td>
+										<td><input type="text" class="form-control" id="billqty3" name="billqty3" disabled></td>
+										<td><input type="text" class="form-control" id="billitemrate3" name="billitemrate3" disabled></td>
+										<td><input type="text" class="form-control" id="billitemtotal3" name="billitemtotal3" disabled></td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<th colspan="2"></th>
+										<th colspan="1">Bill Total (₹)</th>
+										<th colspan="1"><input type="text" class="form-control" id="billtotal" name="billtotal" disabled></th>
+									</tr>
+								</tfoot>
+							</table>
+							<div class="col-12 col-md-6">
+								<label for="billstatus" class="form-label">Bill Payment Status</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="bill-icon fa-solid fa-star"></i></span>
+									<input type="text" class="form-control" id="billstatus" name="billstatus" disabled>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="billmode" class="form-label">Payment Mode</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="bill-icon fa-solid fa-credit-card"></i></span>
+									<input type="text" class="form-control" id="billmode" name="billmode" disabled>
+								</div>
+							</div>
+							<div class="col-6 my-3 text-center">
+								<a href="{{url_for('bills')}}" class="btn w-75 btn-info non-printable"><i class="fa-solid fa-turn-up fa-rotate-270 mx-2"></i>Go Back</a>
+							</div>
+							<div class="col-6 my-3 text-center">
+								<a onclick="window.print();" class="btn w-75 btn-warning non-printable"><i class="fa-solid fa-print mx-2"></i>Print</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endblock %}
+				{% block scripts %}
+				<script type="text/javascript">
+					ids = document.querySelectorAll('[id]:not(datalist)');
+					bdata = {{billdata|tojson|safe}}.slice(1,-1)
+					ids.forEach(function(val,idx) { $('#'+val.id).val(bdata[idx]) });
+				</script>
+				{% endblock %}
+				{% include 'footer.html' %}
