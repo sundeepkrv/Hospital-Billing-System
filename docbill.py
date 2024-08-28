@@ -10,7 +10,7 @@ from hashlib import sha256
 
 # ========== APP PARAMETERS ==========
 app = Flask(__name__)
-app.config["SECRET_KEY"] = 'D0ct0rB!ll!ngSyst3m'
+app.config["SECRET_KEY"] = 'H0sp!taIB!ll!ngSyst3m'
 app.config["SESSION_TYPE"] = 'filesystem'
 DATABASE = 'docbill.sqlite3.db'
 Session(app)
