@@ -84,8 +84,8 @@ If you are trying to install the dependencies behind a proxy network, run the fo
 
 ## Test Credentials
 
-Username: **clinic**
-Password: **clinic**
+Username: ```clinic```
+Password: ```clinic```
 
 ## Tech Stack
 
