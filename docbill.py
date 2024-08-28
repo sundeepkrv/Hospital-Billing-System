@@ -27,7 +27,7 @@ def before_request():
 def login():
 	con = sql.connect(DATABASE)
 	cur = con.cursor()
-	loginlogo = cur.execute("SELECT logo FROM hospital ORDER BY id DESC").fetchone()
+	loginlogo = cur.execute("SELECT logo FROM hospital ORDER BY id DESC").fetchone()[0]
 	return render_template("login.html", loginlogo = loginlogo)
 
 @app.route("/logout")
