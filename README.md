@@ -81,6 +81,12 @@ If you are trying to install the dependencies behind a proxy network, run the fo
 ```bash
   pip --proxy:http://xxx.xxx.xxx.xxx:yyyy install -r requirements.txt
 ```
+
+## Test Credentials
+
+Username: **clinic**
+Password: **clinic**
+
 ## Tech Stack
 
 **Client:** HTML, Bootstrap, Datatables, Javascript, jQuery, ApexCharts
