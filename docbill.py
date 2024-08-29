@@ -5,12 +5,13 @@ from flask_session import Session
 import pandas as pd
 from datetime import timedelta, datetime, date
 from dateutil.relativedelta import relativedelta
+from werkzeug.utils import secure_filename
 import sqlite3 as sql
 from hashlib import sha256
 
 # ========== APP PARAMETERS ==========
 app = Flask(__name__)
-app.config["SECRET_KEY"] = 'H0sp!taIB!ll!ngSyst3m'
+app.config["SECRET_KEY"] = 'D0ct0rB!ll!ngSyst3m'
 app.config["SESSION_TYPE"] = 'filesystem'
 DATABASE = 'docbill.sqlite3.db'
 Session(app)
@@ -26,7 +27,8 @@ def before_request():
 def login():
 	con = sql.connect(DATABASE)
 	cur = con.cursor()
-	loginlogo = cur.execute("SELECT logo FROM hospital ORDER BY id DESC").fetchone()[0]
+	loginlogo = cur.execute("SELECT logo FROM hospital ORDER BY id DESC").fetchone()
+	loginlogo = '' if loginlogo == None else loginlogo[0]
 	return render_template("login.html", loginlogo = loginlogo)
 
 @app.route("/logout")
@@ -69,7 +71,7 @@ def hospital():
 	conn = sql.connect(DATABASE)
 	cur = conn.cursor()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
+	hdata = ['']*6 if hosp == None else [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
 	if request.method == "POST":
 		hosp = request.form.to_dict()
 		logo = request.files['logo']
@@ -109,7 +111,7 @@ def dashboard():
 	nbills = len(filterdf.index)
 	income = chartdf.billtotal.sum()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
+	hdata = ['']*6 if hosp == None else [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
 	return render_template("dashboard.html", dashdata = [income, nbills, npats, ndocs, start, end], chartdata = [list(chartdf.billdate), list(chartdf.billtotal)], hdata = hdata, title = 'Dashboard')
 
 # ========== BILLS ==========
@@ -128,7 +130,7 @@ def bills():
 	mindate = cur.execute("SELECT billdate from bills ORDER BY billdate ASC").fetchone()[0]
 	maxdate = cur.execute("SELECT billdate from bills ORDER BY billdate DESC").fetchone()[0]
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
+	hdata = ['']*6 if hosp == None else [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
 	return render_template("bills.html", bills = content, mindate = mindate, maxdate = maxdate, hdata = hdata, title = 'All Bills')
 
 # Route - Add Bill
@@ -144,7 +146,7 @@ def addbill():
 	patients = cur.execute("SELECT patfullname, patid, patphone from patients").fetchall()
 	doctors = cur.execute("SELECT docfullname FROM doctors").fetchall()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
+	hdata = ['']*6 if hosp == None else [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
 	if request.method == "POST":
 		content = request.form.to_dict()
 		cur.execute("INSERT INTO bills ({}) VALUES ({})".format(','.join(content.keys()), ', '.join(['?']*len(content))), tuple(content.values()))
@@ -165,7 +167,7 @@ def editbill(uid):
 	patients = cur.execute("SELECT patfullname, patid, patphone from patients").fetchall()
 	billdata = cur.execute("SELECT * FROM bills WHERE billnumber = ?", (uid,)).fetchone()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
+	hdata = ['']*6 if hosp == None else [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
 	if request.method == "POST":
 		content = request.form.to_dict()
 		billno = content['billnumber']
@@ -190,7 +192,7 @@ def viewbill(uid):
 	cur = conn.cursor()
 	billdata = cur.execute("SELECT * FROM bills WHERE billnumber = ?", (uid,)).fetchone()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
+	hdata = ['']*6 if hosp == None else [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
 	return render_template("viewbill.html", billdata = billdata, hdata = hdata, title = 'View Bill')
 
 # Route - Delete Bill
@@ -220,7 +222,7 @@ def patients():
 	cur.execute("SELECT * FROM patients ORDER BY entrydate DESC")
 	content = cur.fetchall()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
+	hdata = ['']*6 if hosp == None else [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
 	return render_template("patients.html", patients = content, hdata = hdata, title = 'All Patients')
 
 # Route - Add Patient
@@ -232,7 +234,7 @@ def addpatient():
 	conn = sql.connect(DATABASE)
 	cur = conn.cursor()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
+	hdata = ['']*6 if hosp == None else [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
 	lastsl = cur.execute("SELECT patsl FROM patients ORDER BY patsl DESC").fetchone()
 	lastsl = 0 if lastsl == None else lastsl[0]
 	nextpatid = str(datetime.now().strftime("%y%m%d"))+f"{lastsl+1:02}"
@@ -254,7 +256,7 @@ def editpatient(uid):
 	cur = conn.cursor()
 	patdata = cur.execute("SELECT * FROM patients WHERE patid = ?", (uid,)).fetchone()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
+	hdata = ['']*6 if hosp == None else [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
 	if request.method == "POST":
 		content = request.form.to_dict()
 		patno = content['patid']
@@ -279,7 +281,7 @@ def viewpatient(uid):
 	cur = conn.cursor()
 	patdata = cur.execute("SELECT * FROM patients WHERE patid = ?", (uid,)).fetchone()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
+	hdata = ['']*6 if hosp == None else [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
 	return render_template("viewpatient.html", patdata = patdata, hdata = hdata, title = 'View Patient')
 
 # Route - Delete Patient
@@ -308,7 +310,7 @@ def doctors():
 	cur = conn.cursor()
 	content = cur.execute("SELECT * FROM doctors ORDER BY docsl").fetchall()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
+	hdata = ['']*6 if hosp == None else [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
 	return render_template("doctors.html", doctors = content, hdata = hdata, title = 'All Doctors')
 
 # Route - Add Doctor
@@ -321,7 +323,7 @@ def adddoctor():
 	conn.row_factory = sql.Row
 	cur = conn.cursor()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
+	hdata = ['']*6 if hosp == None else [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
 	specs = hosp['specs'].split(",")
 	lastsl = cur.execute("SELECT docsl FROM doctors ORDER BY docsl DESC").fetchone()
 	lastsl = 0 if lastsl == None else lastsl[0]
@@ -343,7 +345,7 @@ def editdoctor(uid):
 	conn = sql.connect(DATABASE)
 	cur = conn.cursor()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
+	hdata = ['']*6 if hosp == None else [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
 	specs = hosp[6].split(",")
 	docdata = cur.execute("SELECT * FROM doctors WHERE docid = ?", (uid,)).fetchone()
 	if request.method == "POST":
@@ -370,7 +372,7 @@ def viewdoctor(uid):
 	cur = conn.cursor()
 	docdata = cur.execute("SELECT * FROM doctors WHERE docid = ?", (uid,)).fetchone()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
-	hdata = [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
+	hdata = ['']*6 if hosp == None else [hosp[1],hosp[2],hosp[3],hosp[4],hosp[5],hosp[6]]
 	return render_template("viewdoctor.html", docdata = docdata, hdata = hdata, title = 'View Doctor')
 
 # Route - Delete Doctor
