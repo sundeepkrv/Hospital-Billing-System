@@ -1,5 +1,6 @@
 import sqlite3 as sql
 from hashlib import sha256
+import argparse
 
 # Connect to SQLite or create a new SQLite DB if not exists
 con = sql.connect('docbill.sqlite3.db')
@@ -105,15 +106,13 @@ con.execute(bills)
 # Create one user
 cur.execute("INSERT INTO users (username, password) VALUES (?, ?)",('clinic', sha256('clinic'.encode('utf-8')).hexdigest()))
 
-
-# Add dummy doctors
+# Set dummy doctors
 adddoctors = '''INSERT INTO doctors (docsl,docid,docfullname,docdob,docgender,docemail,docphone,docqual,docexp,docspec,docaltphone,docaddress) VALUES
 				('1','D01','Dr. Sailesh','1990-04-03','Male','sailesh@doc.com','9090909090','MD, MBBS','15 Years','Pulmonology','9990099900','Haryana'),
 				('2','D02','Dr. Kiran','1993-08-01','Female','kiran@doc.com','9900990099','MS, MBBS','10 Years','Gynecology','9009009009','Rajasthan'),
 				('3','D03','Dr. Kumar','1996-10-05','Male','kumar@doc.com','9099099090','DNB, MBBS','8 Years','General Medicine','9090090090','Telangana')'''
-cur.execute(adddoctors)
 
-# Add dummy patients
+# Set dummy patients
 addpatients = '''INSERT INTO patients (patsl,patid,patfullname,patdob,patgender,patemail,patphone,pataddress,pataltcontact,patrelation) VALUES
 				('1','P24020101','Dhruv Choudhury','1980-01-01','Male','pat1@doc.com','9079190914','Haryana','9188989169','Wife'),
 				('2','P24030506','Aarav Mistry','1982-02-02','Male','pat2@doc.com','9039064515','Rajasthan','9075945698','Brother'),
@@ -125,9 +124,8 @@ addpatients = '''INSERT INTO patients (patsl,patid,patfullname,patdob,patgender,
 				('8','P24092811','Sumitra Lakshman','1987-12-08','Female','pat8@doc.com','9339213552','Tamil Nadu','9443657022','Sister'),
 				('9','P24101104','Hemant Mishra','1981-05-09','Male','pat9@doc.com','9940491231','Madhya Pradesh','9342103232','Daughter'),
 				('10','P24113008','Divya Kumari','1988-11-10','Female','pat10@doc.com','9777930924','Andhra Pradesh','9756361631','Son')'''
-cur.execute(addpatients)
 
-# Add dummy bills
+# Set dummy bills
 addbills = '''INSERT INTO bills (billsl,billnumber,billdate,billdoctor,billpatdetails,billitem1,billqty1,billitemrate1,billitemtotal1,billitem2,billqty2,billitemrate2,billitemtotal2,billitem3,billqty3,billitemrate3,billitemtotal3,billtotal,billstatus,billmode) VALUES 
 			('1','INV2310131352','2023-10-13','Dr. Sailesh','Name: Dhruv Choudhury | ID: P24020101 | Phone: 9079190914','Consultation','1','350','350','','','','','','','','','350','Paid','Cash'),
 			('2','INV2404041329','2024-04-04','Dr. Kiran','Name: Aarav Mistry | ID: P24030506 | Phone: 9039064515','Injection','1','250','250','','','','','','','','','250','Paid','UPI'),
@@ -279,10 +277,18 @@ addbills = '''INSERT INTO bills (billsl,billnumber,billdate,billdoctor,billpatde
 			('148','INV2406151442','2024-06-15','Dr. Sailesh','Name: Sumitra Lakshman | ID: P24092811 | Phone: 9339213552','Consultation','1','350','350','','','','','','','','','350','Paid','UPI'),
 			('149','INV2305061402','2023-05-06','Dr. Kiran','Name: Hemant Mishra | ID: P24101104 | Phone: 9940491231','Injection','1','250','250','','','','','','','','','250','Paid','Cash'),
 			('150','INV2407311519','2024-07-31','Dr. Kumar','Name: Divya Kumari | ID: P24113008 | Phone: 9777930924','Procedure','1','500','500','','','','','','','','','500','Paid','Cash')'''
-cur.execute(addbills)
 
-#commit changes
+# Use '--nodata' argument in cmd to create DB with/without dummy data
+parser = argparse.ArgumentParser()
+parser.add_argument('--nodata', nargs='?', default='dummydata')
+args = parser.parse_args()
+if args.nodata == 'dummydata':
+	cur.execute(adddoctors)
+	cur.execute(addpatients)
+	cur.execute(addbills)
+
+# Commit changes
 con.commit()
 
-#close the connection
+# Close the DB connection
 con.close()
