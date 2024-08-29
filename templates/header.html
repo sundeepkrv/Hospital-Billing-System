@@ -23,7 +23,7 @@
 	<body class="bg-light">
 		<nav class="navbar navbar-bg sticky-top rounded-pill px-3">
 			<div class="container-fluid">
-				<a class="navbar-brand d-flex align-items-center" href="{{url_for('dashboard')}}"><img src="/static/images/logo/{{hdata[1]}}" alt="Logo" class="img-fluid logoimg mx-2"></a>
+				<a class="navbar-brand d-flex align-items-center" href="{{url_for('dashboard')}}"><img src="/static/images/logo/{{hdata[1]}}" onerror="this.onerror=null; this.src='/static/images/logo.png';" alt="Logo" class="img-fluid logoimg mx-2"></a>
 				<div class="navbar-nav">
 					<a class="nav-item nav-link logout non-printable" href="{{url_for('logout')}}"><i class="fa-solid fa-right-from-bracket px-2"></i>Logout</a>
 				</div>
