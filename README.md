@@ -29,7 +29,7 @@ Create a virtual environment and install requirements
   pip install -r requirements.txt
 ```
 
-Create database by running ```python3 createdb.py```. Run ```python3 createdb --nodata``` to create database without dummy data
+Create database by running ```python3 createdb.py```. Run ```python3 createdb.py --nodata``` to create database without dummy data
 
 Start the server for local deployment
 
@@ -65,7 +65,7 @@ Create a virtual environment and install requirements
   pip install -r requirements.txt
 ```
 
-Create database by running ```python3 createdb.py```. Run ```python3 createdb --nodata``` to create database without dummy data
+Create database by running ```python3 createdb.py```. Run ```python3 createdb.py --nodata``` to create database without dummy data
 
 Start the server for local deployment
 
