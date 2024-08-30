@@ -127,8 +127,10 @@ def bills():
 	cur = conn.cursor()
 	cur.execute("SELECT * FROM bills ORDER BY billdate DESC")
 	content = cur.fetchall()
-	mindate = cur.execute("SELECT billdate from bills ORDER BY billdate ASC").fetchone()[0]
-	maxdate = cur.execute("SELECT billdate from bills ORDER BY billdate DESC").fetchone()[0]
+	mindate = cur.execute("SELECT billdate from bills ORDER BY billdate ASC").fetchone()
+	mindate = '' if mindate == None else mindate
+	maxdate = cur.execute("SELECT billdate from bills ORDER BY billdate DESC").fetchone()
+	maxdate = '' if maxdate == None else maxdate
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
 	hdata = ['']*6 if hosp == None else [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
 	return render_template("bills.html", bills = content, mindate = mindate, maxdate = maxdate, hdata = hdata, title = 'All Bills')
@@ -324,7 +326,7 @@ def adddoctor():
 	cur = conn.cursor()
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
 	hdata = ['']*6 if hosp == None else [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
-	specs = hosp['specs'].split(",")
+	specs = '' if hosp == None else hosp['specs'].split(",")
 	lastsl = cur.execute("SELECT docsl FROM doctors ORDER BY docsl DESC").fetchone()
 	lastsl = 0 if lastsl == None else lastsl[0]
 	nextdocid = f"{lastsl+1:02}"
