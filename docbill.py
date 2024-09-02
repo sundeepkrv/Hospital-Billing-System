@@ -128,11 +128,12 @@ def bills():
 	cur.execute("SELECT * FROM bills ORDER BY billdate DESC")
 	content = cur.fetchall()
 	mindate = cur.execute("SELECT billdate from bills ORDER BY billdate ASC").fetchone()
-	mindate = '' if mindate == None else mindate
+	mindate = end - relativedelta(days=365) if mindate == None else mindate[0]
 	maxdate = cur.execute("SELECT billdate from bills ORDER BY billdate DESC").fetchone()
-	maxdate = '' if maxdate == None else maxdate
+	maxdate = date.today() if maxdate == None else maxdate[0]
 	hosp = cur.execute("SELECT * FROM hospital ORDER BY id DESC").fetchone()
 	hdata = ['']*6 if hosp == None else [hosp['name'],hosp['logo'],hosp['address'],hosp['phone'],hosp['email'],hosp['specs']]
+	print(mindate, maxdate)
 	return render_template("bills.html", bills = content, mindate = mindate, maxdate = maxdate, hdata = hdata, title = 'All Bills')
 
 # Route - Add Bill
