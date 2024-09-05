@@ -1,4 +1,4 @@
-# Doc Bill
+# Hospital Billing System
 A simple hospital billing system for small sized clinic/hospital for managing doctors, patients, bills and dashboard for bill analytics (developed in flask)
 
 ## Development
